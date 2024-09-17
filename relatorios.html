@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios Financeiros</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-dark border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading text-white">Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="index.html" class="list-group-item list-group-item-action bg-dark text-white">Dashboard</a>
+                <a href="saldo-transacoes.html" class="list-group-item list-group-item-action bg-dark text-white">Saldo
+                    & Transações</a>
+                <a href="pagamentos.html" class="list-group-item list-group-item-action bg-dark text-white">Pagamentos &
+                    Recebíveis</a>
+                <a href="relatorios.html"
+                    class="list-group-item list-group-item-action bg-dark text-white">Relatórios</a>
+                <a href="perfil.html" class="list-group-item list-group-item-action bg-dark text-white">Perfil</a>
+            </div>
+        </div>
+
+        <!-- Página Principal -->
+        <div id="page-content-wrapper">
+            <!-- Topo -->
+            <nav class="navbar navbar-light bg-light border-bottom">
+                <div class="container-fluid">
+                    <!-- Botão do Menu (ícone de três linhas) e Logo -->
+                    <button class="btn " id="menu-toggle">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="navbar-brand ml-3" href="index.html">
+                        <img src="assets/logo.png" alt="Logo" width="100">
+                    </a>
+
+                    <!-- Foto de Perfil -->
+                    <div class="d-flex align-items-center ml-auto">
+                        <a href="perfil.html" class="nav-link">
+                            <img src="assets/profile.jpg" alt="Perfil" class="rounded-circle" width="40">
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                <h3 class="mt-4">Relatórios Financeiros</h3>
+                <button class="btn btn-secondary mb-3">Gerar Relatório</button>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Relatório</th>
+                            <th>Data de Geração</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Análise de Fluxo de Caixa</td>
+                            <td>2024-01-10</td>
+                            <td><button class="btn btn-primary">Ver</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle do menu
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+</body>
+
+</html>

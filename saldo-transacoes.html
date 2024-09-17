@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saldo & Transações</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-dark border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading text-white">Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="index.html" class="list-group-item list-group-item-action bg-dark text-white">Dashboard</a>
+                <a href="saldo-transacoes.html" class="list-group-item list-group-item-action bg-dark text-white">Saldo
+                    & Transações</a>
+                <a href="pagamentos.html" class="list-group-item list-group-item-action bg-dark text-white">Pagamentos &
+                    Recebíveis</a>
+                <a href="relatorios.html"
+                    class="list-group-item list-group-item-action bg-dark text-white">Relatórios</a>
+                <a href="perfil.html" class="list-group-item list-group-item-action bg-dark text-white">Perfil</a>
+            </div>
+        </div>
+
+        <!-- Página Principal -->
+        <div id="page-content-wrapper">
+            <!-- Topo -->
+            <nav class="navbar navbar-light bg-light border-bottom">
+                <div class="container-fluid">
+                    <!-- Botão do Menu (ícone de três linhas) e Logo -->
+                    <button class="btn " id="menu-toggle">
+                        <span class="navbar-toggler-icon"></span> <!-- Ícone de três linhas (hamburger) -->
+                    </button>
+                    <a class="navbar-brand ml-3" href="index.html">
+                        <img src="assets/logo.png" alt="Logo" width="100">
+                    </a>
+
+                    <!-- Foto de Perfil -->
+                    <div class="d-flex align-items-center ml-auto">
+                        <a href="perfil.html" class="nav-link">
+                            <img src="assets/profile.jpg" alt="Perfil" class="rounded-circle" width="40">
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                <h3 class="mt-4">Consulta de Saldo & Transações</h3>
+                <div class="alert alert-info">
+                    Saldo Atual: <strong>R$ 25,000.00</strong>
+                </div>
+
+                <!-- Formulário para adicionar nova transação -->
+                <h4>Adicionar Nova Transação</h4>
+                <form id="transactionForm">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="date">Data</label>
+                            <input type="date" class="form-control" id="date" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="description">Descrição</label>
+                            <input type="text" class="form-control" id="description" required>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="value">Valor</label>
+                            <input type="number" class="form-control" id="value" step="0.01" required>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="type">Tipo</label>
+                            <select id="type" class="form-control" required>
+                                <option value="Receita">Receita</option>
+                                <option value="Despesa">Despesa</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button type="submit" class="btn btn-primary">Adicionar Transação</button>
+                        </div>
+                    </div>
+                </form>
+
+                <h4 class="mt-4">Histórico de Transações</h4>
+                <input type="text" id="search" class="form-control mb-3" placeholder="Buscar transações...">
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsTable">
+                        <tr>
+                            <td>2024-01-10</td>
+                            <td>Recebimento - Cliente A</td>
+                            <td>R$ 5,000.00</td>
+                            <td><span class="badge badge-success">Receita</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-08</td>
+                            <td>Pagamento - Fornecedor B</td>
+                            <td>R$ 3,000.00</td>
+                            <td><span class="badge badge-danger">Despesa</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle do menu
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+
+        // Função de busca
+        document.getElementById('search').addEventListener('input', function () {
+            let filter = this.value.toUpperCase();
+            let rows = document.querySelectorAll("#transactionsTable tr");
+
+            rows.forEach(row => {
+                let description = row.getElementsByTagName("td")[1].textContent || row.getElementsByTagName("td")[1].innerText;
+                row.style.display = description.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+            });
+        });
+
+        // Função para adicionar nova transação
+        document.getElementById('transactionForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Obter valores do formulário
+            const date = document.getElementById('date').value;
+            const description = document.getElementById('description').value;
+            const value = parseFloat(document.getElementById('value').value).toFixed(2);
+            const type = document.getElementById('type').value;
+
+            // Criar uma nova linha
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${date}</td>
+                <td>${description}</td>
+                <td>R$ ${value}</td>
+                <td><span class="badge badge-${type === 'Receita' ? 'success' : 'danger'}">${type}</span></td>
+            `;
+
+            // Adicionar a nova linha à tabela
+            document.getElementById('transactionsTable').appendChild(newRow);
+
+            // Limpar o formulário
+            this.reset();
+        });
+    </script>
+</body>
+
+</html>

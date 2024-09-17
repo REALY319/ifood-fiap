@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Pagamentos & Recebíveis</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-dark border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading text-white">Menu</div>
+            <div class="list-group list-group-flush">
+                <a href="index.html" class="list-group-item list-group-item-action bg-dark text-white">Dashboard</a>
+                <a href="saldo-transacoes.html" class="list-group-item list-group-item-action bg-dark text-white">Saldo
+                    & Transações</a>
+                <a href="pagamentos.html" class="list-group-item list-group-item-action bg-dark text-white">Pagamentos &
+                    Recebíveis</a>
+                <a href="relatorios.html"
+                    class="list-group-item list-group-item-action bg-dark text-white">Relatórios</a>
+                <a href="perfil.html" class="list-group-item list-group-item-action bg-dark text-white">Perfil</a>
+            </div>
+        </div>
+
+        <!-- Página Principal -->
+        <div id="page-content-wrapper">
+            <!-- Topo -->
+            <nav class="navbar navbar-light bg-light border-bottom">
+                <div class="container-fluid">
+                    <!-- Botão do Menu (ícone de três linhas) e Logo -->
+                    <button class="btn " id="menu-toggle">
+                        <span class="navbar-toggler-icon"></span> <!-- Ícone de três linhas (hamburger) -->
+                    </button>
+                    <a class="navbar-brand ml-3" href="index.html">
+                        <img src="assets/logo.png" alt="Logo" width="100">
+                    </a>
+
+                    <!-- Foto de Perfil -->
+                    <div class="d-flex align-items-center ml-auto">
+                        <a href="perfil.html" class="nav-link">
+                            <img src="assets/profile.jpg" alt="Perfil" class="rounded-circle" width="40">
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                <h3 class="mt-4">Gestão de Pagamentos & Recebíveis</h3>
+
+                <!-- Formulário para adicionar novo pagamento -->
+                <h4>Adicionar Novo Pagamento</h4>
+                <form id="paymentForm">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="paymentDate">Data</label>
+                            <input type="date" class="form-control" id="paymentDate" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="paymentDescription">Descrição</label>
+                            <input type="text" class="form-control" id="paymentDescription" required>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="paymentValue">Valor</label>
+                            <input type="number" class="form-control" id="paymentValue" step="0.01" required>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="paymentStatus">Status</label>
+                            <select id="paymentStatus" class="form-control" required>
+                                <option value="Pendente">Pendente</option>
+                                <option value="Pago">Pago</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button type="submit" class="btn btn-primary">Adicionar Pagamento</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Tabela de pagamentos -->
+                <table class="table table-striped mt-4">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentsTable">
+                        <tr>
+                            <td>2024-01-15</td>
+                            <td>Pagamento - Fornecedor X</td>
+                            <td>R$ 2,000.00</td>
+                            <td><span class="badge badge-warning">Pendente</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle do menu
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+
+        // Função para adicionar novo pagamento
+        document.getElementById('paymentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Obter valores do formulário
+            const date = document.getElementById('paymentDate').value;
+            const description = document.getElementById('paymentDescription').value;
+            const value = parseFloat(document.getElementById('paymentValue').value).toFixed(2);
+            const status = document.getElementById('paymentStatus').value;
+
+            // Criar uma nova linha
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${date}</td>
+                <td>${description}</td>
+                <td>R$ ${value}</td>
+                <td><span class="badge badge-${status === 'Pendente' ? 'warning' : 'success'}">${status}</span></td>
+            `;
+
+            // Adicionar a nova linha à tabela
+            document.getElementById('paymentsTable').appendChild(newRow);
+
+            // Limpar o formulário
+            this.reset();
+        });
+    </script>
+</body>
+
+</html>
